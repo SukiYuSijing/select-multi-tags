@@ -13,6 +13,7 @@ export default defineConfig({
       fileName: (format) => {
         return `multi-select.${format}.js`
       },
+      formats: ['cjs', 'es', 'umd'],
     },
     rollupOptions: {
       // 确保外部化处理那些你不想打包进库的依赖

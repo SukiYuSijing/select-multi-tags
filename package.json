@@ -10,7 +10,7 @@
   "main": "./dist/multi-select.umd.js",
   "module": "./dist/multi-select.es.js",
   "exports": {
-    "require": "./dist/multi-select.js",
+    "require": "./dist/multi-select.cjs.js",
     "import": "./dist/multi-select.es.js"
   },
   "repository": {
