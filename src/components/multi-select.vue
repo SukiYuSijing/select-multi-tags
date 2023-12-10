@@ -1,7 +1,6 @@
 <template>
   <el-select
     ref="elSelectRef"
-    :class="{ 'hidden-content': calculating ? true : false }"
     :max-collapse-tags="maxCollapseTags"
     v-bind="$attrs"
     filterable
@@ -43,7 +42,7 @@ function observeFn() {
   }
 }
 function useObserver(el: Element) {
-  const config = { childList: true }
+  const config = { childList: true, attributes: true }
   function callback() {
     const wrapperEle = el?.querySelector('.el-select-tags-wrapper')
     if (!wrapperEle) {
@@ -59,7 +58,13 @@ function useObserver(el: Element) {
   return observer
 }
 function useTagsChangesObserver(wrapperEle: Element, immediate = false) {
-  const config = { childList: true, subtree: true }
+  const config = {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeOldValue: true,
+    attributeFilter: ['style'],
+  }
   let previousLen: number
   function callback() {
     if (calculating.value) return
@@ -86,23 +91,27 @@ function useTagsChangesObserver(wrapperEle: Element, immediate = false) {
         }
       }
     } else if (!previousLen || previousLen <= currentLen) {
-      const inputElement = wrapperEle.querySelector('.el-select__input')
+      const inputElement = wrapperEle.nextElementSibling
       const inputElementWidth = inputElement?.clientWidth || 0
       nextTick(() => {
-        if (!inputElement || inputElementWidth > props.inputEleWidth)
-          maxCollapseTags.value = maxCollapseTags.value + 10
-        else maxCollapseTags.value = children.length - 1
+        if (!inputElement || inputElementWidth > props.inputEleWidth) {
+          if (currentLen > maxCollapseTags.value)
+            //需要解决，新增的标签过长，又重新占满了input的空间的问题
+            //标签最大宽度应该和el-select的width减去input的宽度
+            // resizeObserver通过方式替代，否则太多的observe
+            maxCollapseTags.value = maxCollapseTags.value + 10
+        } else maxCollapseTags.value = children.length - 1
       })
     }
+    previousLen = currentLen
     setTimeout(() => {
-      previousLen = currentLen
       calculating.value = false
     }, 0)
   }
   if (immediate) {
     callback()
   }
-  const observer = new MutationObserver(debounce(callback, 100))
+  const observer = new MutationObserver(debounce(callback, 0))
   observer.observe(wrapperEle, config)
   return observer
 }
@@ -114,7 +123,7 @@ onBeforeUnmount(() => {
 </script>
 <style>
 .el-select {
-  contain: paint;
+  contain: strict;
   height: var(--height);
 }
 .hidden-content .el-select__tags {
