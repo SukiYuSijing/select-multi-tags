@@ -8,8 +8,8 @@
     "./example"
   ],
   "module": "./dist/multi-select.es.js",
+  "browser": "./dist/multi-select.es.js",
   "exports": {
-    "require": "./dist/multi-select.cjs.js",
     "import": "./dist/multi-select.es.js"
   },
   "repository": {
@@ -25,6 +25,12 @@
   "peerDependencies": {
     "element-plus": "^2.4.3",
     "vue": "^3.3.10"
+  },
+  "resolve": {
+    "mainFields": [
+      "browser",
+      "module"
+    ]
   },
   "devDependencies": {
     "@tsconfig/node18": "^18.2.2",
