@@ -7,7 +7,6 @@
     "./dist",
     "./example"
   ],
-  "main": "./dist/multi-select.umd.js",
   "module": "./dist/multi-select.es.js",
   "exports": {
     "require": "./dist/multi-select.cjs.js",
