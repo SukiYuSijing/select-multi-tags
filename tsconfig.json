@@ -1,14 +1,16 @@
 {
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
+  "exclude": ["example/main.ts", "example/App.vue"],
   "files": [],
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
-    },
-    {
-      "path": "./tsconfig.app.json"
-    }
-  ],
   "compilerOptions": {
-    "types": ["unplugin-vue-define-options/macros-global" /* ... */]
+    "skipLibCheck": true,
+    "types": ["unplugin-vue-define-options/macros-global" /* ... */],
+    "composite": true,
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   }
 }
