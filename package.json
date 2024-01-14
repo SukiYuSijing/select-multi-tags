@@ -1,6 +1,6 @@
 {
   "name": "select-multi-tags",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": false,
   "type": "module",
   "files": [
@@ -18,7 +18,7 @@
     "directory": "src"
   },
   "scripts": {
-    "dev":"vite",
+    "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force"
